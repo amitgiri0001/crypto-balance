@@ -1,5 +1,4 @@
-
-export const DB = {
+{
   "user_1": {
     "holdings": [
       {

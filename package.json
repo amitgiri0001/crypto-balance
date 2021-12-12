@@ -35,7 +35,7 @@
     "build:watch": "tsc -w -p tsconfig.release.json",
     "lint": "eslint . --ext .ts",
     "pretest": "npm run build",
-    "test": "env NODE_ENV=testing TZ='utc' npm run coverage mocha --allow-console-logs \"build/__tests__\"",
+    "test": "env NODE_ENV=test TZ='utc' npm run coverage mocha --allow-console-logs \"build/__tests__\"",
     "test:watch": "mocha -r ts-node/register --allow-console-logs --watch \"build/__tests__\"",
     "posttest": "npm run lint",
     "coverage": "nyc"
@@ -44,6 +44,7 @@
   "dependencies": {
     "axios": "^0.24.0",
     "chai": "^4.3.4",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "http-errors": "^1.8.1",
     "tslib": "~2.3.1"

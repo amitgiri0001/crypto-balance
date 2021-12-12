@@ -1,10 +1,14 @@
 import {ErrorCodes} from '../constants/errorCodes.constant';
 import {DataSource} from '../types/dataSource.type';
-import {DB as memoryDB} from '../__mock_data__/userBalances';
-
+const testDB = '../../__mock_data__/testdb.json'
 export class MemoryDatasource<T> implements DataSource<T> {
+  private memoryDB: { [userId: string]: T }
+  constructor() {
+    this.memoryDB = require(process.env.DB_FILE_PATH ?? testDB);
+  }
+
   async findById(id: string): Promise<T> {
-      const data = memoryDB[id];
+      const data = this.memoryDB[id];
 
       if(!data) {
         throw Object.assign({
