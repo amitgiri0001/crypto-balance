@@ -3,7 +3,7 @@ import {DataSources} from '../../constants/datasource.constants';
 import {BalanceController} from "./balance.controller";
 const balanceRouter = Router();
 
-balanceRouter.get('/:userId/balances', async (req, res, next) => {
+export const balanceByUserId = async (req, res, next) => {
     const context = {
         dataSource: new (DataSources.memory)()
     }
@@ -21,7 +21,9 @@ balanceRouter.get('/:userId/balances', async (req, res, next) => {
     catch (error) {
         return next(error);
     }
-});
+}
+
+balanceRouter.get('/:userId/balances', balanceByUserId);
 
 export {balanceRouter};
 
