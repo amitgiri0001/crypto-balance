@@ -6,7 +6,6 @@
     "allowSyntheticDefaultImports": true,
     "allowJs": true,
     "importHelpers": true,
-    "jsx": "react",
     "alwaysStrict": true,
     "sourceMap": true,
     "forceConsistentCasingInFileNames": true,
@@ -20,6 +19,6 @@
   },
   "include": [
     "src/**/*",
-    "__tests__/**/*"
+    "src/__tests__/**/*"
   ]
 }

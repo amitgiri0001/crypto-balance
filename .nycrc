@@ -1,0 +1,17 @@
+{
+  "include": [
+    "build"
+  ],
+  "exclude": [
+    "build/__tests__/"
+  ],
+  "extension": [
+    ".js",
+    ".ts"
+  ],
+  "reporter": [
+    "text",
+    "lcov"
+  ],
+  "exclude-after-remap": false
+}
