@@ -7,8 +7,8 @@ export class BalanceController {
     private balanceRepository: BalanceRepository;
     private exchangeService: ExchangeService;
 
-    constructor() {
-        this.balanceRepository = new BalanceRepository();
+    constructor(context) {
+        this.balanceRepository = new BalanceRepository(context.dataSource);
         this.exchangeService = new ExchangeService();
     }
 

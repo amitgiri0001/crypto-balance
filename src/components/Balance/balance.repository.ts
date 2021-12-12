@@ -1,20 +1,18 @@
-import {ErrorCodes} from '../../constants/errorCodes.constant';
+import {DataSource} from '../../types/dataSource.type';
 import {Holdings} from '../../types/holdings.type';
-import {DB as data} from '../../__mock_data__/userBalances';
+import {User} from '../../types/user.type';
 
 export class BalanceRepository {
-    async getBalance(userId: string): Promise<Holdings[]> {
-        const user = data[userId];
+    constructor(
+        private dataSource: DataSource<User>
+    ) {}
 
-        if(!user) {
-            throw Object.assign({
-                code: ErrorCodes.BAD_REQUEST.USER_NOT_FOUND,
-                message: `User not found`,
-            });
-        }
+    async getBalance(userId: string): Promise<Holdings[]> {
+        const user = this.dataSource.findById(userId);
+
         // Below is just to keep the return type uniform.
         // It won't be need with proper DB schema and query.
-        else if(!user.holdings) {
+        if(!user.holdings) {
             user.holdings = [];
         }
 

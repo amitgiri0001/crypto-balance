@@ -1,6 +1,5 @@
-import {User} from '../types/user.type';
 
-export const DB: { [userId: string]: User } = {
+export const DB = {
   "user_1": {
     "holdings": [
       {
