@@ -32,7 +32,7 @@ export class ExchangeService {
 
     return {
       balances: updatedHoldings,
-      total,
+      total: parseFloat(total.toFixed(FIXED_DECIMAL)),
     }
   }
 
