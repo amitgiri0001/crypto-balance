@@ -3,7 +3,7 @@ import {DataSource} from '../types/dataSource.type';
 import {DB as memoryDB} from '../__mock_data__/userBalances';
 
 export class MemoryDatasource<T> implements DataSource<T> {
-  findById(id: string): T {
+  async findById(id: string): Promise<T> {
       const data = memoryDB[id];
 
       if(!data) {

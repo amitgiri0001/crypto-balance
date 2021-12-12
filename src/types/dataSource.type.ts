@@ -1,3 +1,3 @@
 export interface DataSource<T> {
-  findById(id: string): T
+  findById(id: string): Promise<T>
 }
