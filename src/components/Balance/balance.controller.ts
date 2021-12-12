@@ -14,7 +14,7 @@ export class BalanceController {
 
     async getBalance(userId: string, conversionCurrency: string = DEFAULT_FIAT_CURRENCY): Promise<TotalBalance> {
         // Get user holdings
-        const userHoldings = await this.balanceRepository.getBalance(userId);
+        const userHoldings = await this.balanceRepository.getHoldings(userId);
 
         const exchangePairsPromise = userHoldings.map(async (holding) => {
             return this.exchangeService.getExchangeRate(holding.currency, conversionCurrency);

@@ -10,6 +10,11 @@ describe('BalanceRepository', () => {
   before(`Mock Datasource`, () => {
     memoryDatasourceStub = sinon.stub(MemoryDatasource.prototype, 'findById');
   });
+
+  after(`Restore mocks`, () => {
+    memoryDatasourceStub.restore();
+  });
+
   const memoryDatasource = new MemoryDatasource();
   const balanceRepository = new BalanceRepository(memoryDatasource);
   let userHoldings: Holdings[];
@@ -39,14 +44,14 @@ describe('BalanceRepository', () => {
 
   it('return user holdings', async () => {
     memoryDatasourceStub.resolves(data[userId1]);
-    const holdings = await balanceRepository.getBalance(userId1);
+    const holdings = await balanceRepository.getHoldings(userId1);
 
     expect(holdings).eql(userHoldings);
   });
 
   it('should return empty holdings if non found in DB', async () => {
     memoryDatasourceStub.resolves(data[userId2]);
-    const holdings = await balanceRepository.getBalance(userId2);
+    const holdings = await balanceRepository.getHoldings(userId2);
 
     expect(holdings).eql([]);
   });

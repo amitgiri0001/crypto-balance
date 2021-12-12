@@ -7,7 +7,7 @@ export class BalanceRepository {
         private dataSource: DataSource<User>
     ) {}
 
-    async getBalance(userId: string): Promise<Holdings[]> {
+    async getHoldings(userId: string): Promise<Holdings[]> {
         const user = await this.dataSource.findById(userId);
 
         // Below is just to keep the return type uniform.
