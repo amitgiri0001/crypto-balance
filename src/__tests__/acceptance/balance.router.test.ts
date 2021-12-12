@@ -3,6 +3,7 @@ import * as sinon from 'sinon';
 import * as client from 'supertest';
 import {app} from '../../app';
 import {BalanceController} from '../../components/Balance/balance.controller';
+import {ErrorCodes} from '../../constants/errorCodes.constant';
 
 describe('Balance Router', () => {
   describe('balanceByUserId', () => {
@@ -42,6 +43,19 @@ describe('Balance Router', () => {
       await client(app)
         .get(`/users/${userId}/balances`)
         .expect(500)
+    });
+
+    it('should log and return code to frontend to handle bad requests', async () => {
+      const userId = 'user_1';
+
+      getBalance.throwsException({
+        // Originally a 404 from third party.
+        code: ErrorCodes.BAD_REQUEST.CURRENCY_NOT_CONVERTIBLE
+      })
+
+      await client(app)
+        .get(`/users/${userId}/balances`)
+        .expect(400)
     });
   });
 });

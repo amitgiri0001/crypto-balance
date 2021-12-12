@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {ErrorCodes} from '../constants/errorCodes.constant';
 import {Balance} from '../types/balance.type';
 import {ExchangeRate} from '../types/exchangeRate.type';
 import {Holdings} from '../types/holdings.type';
@@ -40,7 +41,22 @@ export class ExchangeService {
     const currencyPair = baseCurrency.toLocaleLowerCase() + targetCurrency.toLocaleLowerCase();
 
     // TODO: Need to cache this API call to avoid hitting rate limits.
-    const { data } = await axios.get(`https://www.bitstamp.net/api/v2/ticker/${currencyPair}`);
+    const { data } = await axios.get(`https://www.bitstamp.net/api/v2/ticker/${currencyPair}`)
+                        .catch((error) => {
+                          if(error.response.status == 404) {
+                            throw new Object({
+                              code: ErrorCodes.BAD_REQUEST.CURRENCY_NOT_CONVERTIBLE,
+                              message: `Unsupported currency conversion ${currencyPair}`
+                            })
+                          }
+
+                          console.error({
+                            code: ErrorCodes.THIRD_PARTY_ERRORS.SERVICE_UNAVAILABLE,
+                            message: `Service unavailable.`
+                          });
+
+                          throw error;
+                        });
 
      return {
         baseCurrency,

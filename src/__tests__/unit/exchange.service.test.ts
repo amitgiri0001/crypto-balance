@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {expect} from 'chai';
 import * as sinon from 'sinon';
+import {ErrorCodes} from '../../constants/errorCodes.constant';
 import {ExchangeService} from '../../services/exchange.service';
 import {ExchangeRate} from '../../types/exchangeRate.type';
 import {Holdings} from '../../types/holdings.type';
@@ -76,6 +77,42 @@ describe("ExchangeService", () => {
       const { rate } = await exchangeService.getExchangeRate(baseCurrency, targetCurrency);
 
       expect(rate).eql(rateFromThirdParty);
+    });
+
+    it('should handle unavailable currency pair exceptions', async () => {
+      const exchangeService = new ExchangeService();
+      const baseCurrency = 'btc';
+      const targetCurrency = 'sgd';
+
+      axiosStub.rejects({
+        response: {
+          status: 404
+        }
+      })
+      await exchangeService.getExchangeRate(baseCurrency, targetCurrency)
+        .then(() => {
+          throw new Error(`Code should not reach here.`)
+        },(error) => {
+          expect(error.code).eql(ErrorCodes.BAD_REQUEST.CURRENCY_NOT_CONVERTIBLE);
+        })
+    });
+
+    it('should handle other exceptions from third party', async () => {
+      const exchangeService = new ExchangeService();
+      const baseCurrency = 'btc';
+      const targetCurrency = 'sgd';
+
+      axiosStub.rejects({
+        response: {
+          status: 429 // rate limit
+        }
+      })
+      await exchangeService.getExchangeRate(baseCurrency, targetCurrency)
+        .then(() => {
+          throw new Error(`Code should not reach here.`)
+        },(error) => {
+          expect(error.code == undefined).eql(true);
+        })
     });
   });
 });
